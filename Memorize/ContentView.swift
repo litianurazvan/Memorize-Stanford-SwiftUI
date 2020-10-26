@@ -14,6 +14,9 @@ struct ContentView: View {
                 CardView(isFaceUp: true)
             }
         }
+        .foregroundColor(Color.orange)
+        .font(.largeTitle)
+        .padding()
     }
 }
 struct CardView: View {
@@ -25,17 +28,11 @@ struct CardView: View {
                 RoundedRectangle(cornerRadius: 12).fill(Color.white)
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(lineWidth: 4)
-                    .foregroundColor(Color.orange)
                 Text("👻")
-                    .font(.largeTitle)
             } else {
                 RoundedRectangle(cornerRadius: 12)
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(lineWidth: 4)
-                    .foregroundColor(Color.orange)
             }
         }
-        .padding()
     }
 }
 
