@@ -29,35 +29,29 @@ struct CardView: View {
 
     var body: some View {
         GeometryReader { geometryProxy in
-            ZStack {
-                if card.isFaceUp {
-                    RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
-                    RoundedRectangle(cornerRadius: cornerRadius)
-                        .stroke(lineWidth: lineWidth)
+            if card.isFaceUp || !card.isMatched {
+                ZStack {
+                    Pie(startAngle: .degrees(-90), endAngle: .degrees(110-90), clockwise: true)
+                        .padding(5)
+                        .opacity(0.4)
                     Text(card.content)
-                } else {
-                    if !card.isMatched {
-                        RoundedRectangle(cornerRadius: cornerRadius)
-                    }
+                        .font(.system(size: min(geometryProxy.size.width, geometryProxy.size.height) * fontScaleFactor))
                 }
+                .cardify(isFaceUp: card.isFaceUp)
             }
-            .font(.system(size: min(geometryProxy.size.width, geometryProxy.size.height) * fontScaleFactor))
         }
     }
-
-    //MARK: - Drawing Constants
-
-    let cornerRadius: CGFloat = 12
-    let lineWidth: CGFloat = 4
-    let fontScaleFactor: CGFloat = 0.75
+    private let fontScaleFactor: CGFloat = 0.70
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ContentView(viewModel: .default)
-            ContentView(viewModel: .default)
+//        Group {
+//            ContentView(viewModel: .default)
+            let game = EmojiMemoryGame()
+            game.choose(card: game.cards[0])
+            return ContentView(viewModel: game)
                 .preferredColorScheme(.dark)
-        }
+//        }
     }
 }

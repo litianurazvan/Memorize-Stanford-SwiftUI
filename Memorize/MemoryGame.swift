@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-extension Array {
-    var firstIfOnly: Element? {
-        count == 1 ? first : nil
-    }
-}
-
 struct MemoryGame<CardContent: Equatable> {
     var cards: [Card]
 
