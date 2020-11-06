@@ -11,16 +11,25 @@ struct ContentView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
-        _Grid(viewModel.cards) { card in
-            CardView(card: card)
-                .aspectRatio(2/3, contentMode: .fit)
-                .onTapGesture {
-                    viewModel.choose(card: card)
+        VStack {
+            _Grid(viewModel.cards) { card in
+                CardView(card: card)
+                    .onTapGesture {
+                        withAnimation(.easeOut) {
+                            viewModel.choose(card: card)
+                        }
+                    }
+                    .padding()
+            }
+            .foregroundColor(Color.orange)
+            .padding()
+
+            Button("New Game") {
+                withAnimation(.easeInOut) {
+                    viewModel.reset()
                 }
-                .padding()
+            }
         }
-        .foregroundColor(Color.orange)
-        .padding()
     }
 }
 
@@ -36,8 +45,12 @@ struct CardView: View {
                         .opacity(0.4)
                     Text(card.content)
                         .font(.system(size: min(geometryProxy.size.width, geometryProxy.size.height) * fontScaleFactor))
+                        .rotationEffect(Angle.init(degrees: card.isMatched ? 360 : 0))
+                        .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)
                 }
                 .cardify(isFaceUp: card.isFaceUp)
+                .transition(.scale)
+                
             }
         }
     }
@@ -49,7 +62,7 @@ struct ContentView_Previews: PreviewProvider {
 //        Group {
 //            ContentView(viewModel: .default)
             let game = EmojiMemoryGame()
-            game.choose(card: game.cards[0])
+//            game.choose(card: game.cards[0])
             return ContentView(viewModel: game)
                 .preferredColorScheme(.dark)
 //        }

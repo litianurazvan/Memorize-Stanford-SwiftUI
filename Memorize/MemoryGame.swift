@@ -22,8 +22,7 @@ struct MemoryGame<CardContent: Equatable> {
     }
 
     struct Card: Identifiable, Equatable {
-        var id = UUID()
-
+        var id: Int
         var isFaceUp: Bool = false
         var isMatched: Bool = false
         let content: CardContent
@@ -33,9 +32,10 @@ struct MemoryGame<CardContent: Equatable> {
         cards = []
         for pairIndex in 0..<numberOfPairsOfCards {
             let content = cardContentFactory(pairIndex)
-            cards.append(Card(content: content))
-            cards.append(Card(content: content))
+            cards.append(Card(id: pairIndex * 2, content: content))
+            cards.append(Card(id: pairIndex * 2 + 1, content: content))
         }
+        cards.shuffle()
     }
 
     mutating func choose(card: Card) {
